@@ -7,6 +7,9 @@ LOCAL_PYTHON = .venv/bin/python3
 LOCAL_PIP_COMPILE = .venv/bin/pip-compile
 LOCAL_PIP_SYNC = .venv/bin/pip-sync
 
+GLOBAL_VENV = $HOME/.venv/pipx.venv
+
+
 ## Create an empty environment
 venv: $(GLOBAL_PYTHON)
 	@echo "Creating .venv..."
@@ -57,4 +60,20 @@ check: ${LOCAL_PYTHON}
 clean:
 	if exist .git\\hooks ( rmdir .git\\hooks /q /s )
 	- deactivate
-	if exist .venv\\ ( rmdir .venv /q /s )
+	if exist .venv\\ ( rmdir .venv /q /s 
+
+
+## global setup - run only once
+global-venv: ${GLOBAL_PYTHON}
+	${GLOBAL_PYTHON} -m ven ${GLOBAL_VENV}
+	@echo "Installing global helper packages..."
+	${GLOBAL_PYTHON} source ${GLOBAL_VENV}/bin/activate
+	${GLOBAL_PYTHON} -m pip install pipx
+	${GLOBAL_PYTHON} -m pipx install black
+        ${GLOBAL_PYTHON} -m pipx install isort
+        ${GLOBAL_PYTHON} -m pipx install pydocstyle
+        ${GLOBAL_PYTHON} -m pipx install ruff
+        ${GLOBAL_PYTHON} -m pipx install sqlfluff
+        ${GLOBAL_PYTHON} -m pipx install pre-commit
+	${GLOBAL_PYTHON} -m pipx ensurepath
+	
