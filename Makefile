@@ -1,15 +1,16 @@
+
 .EXPORT_ALL_VARIABLES:
 .PHONY: venv install sync upgrade pre-commit check clean
 
-GLOBAL_PYTHON = $(shell py -3.9 -c 'import sys; print(sys.executable)')
-LOCAL_PYTHON = .venv\\Scripts\\python.exe
-LOCAL_PIP_COMPILE = .venv\\Scripts\\pip-compile.exe
-LOCAL_PIP_SYNC = .venv\\Scripts\\pip-sync.exe
+GLOBAL_PYTHON = $(shell python3 -c 'import sys; print(sys.executable)')
+LOCAL_PYTHON = .venv/bin/python3
+LOCAL_PIP_COMPILE = .venv/bin/pip-compile
+LOCAL_PIP_SYNC = .venv/bin/pip-sync
 
 ## Create an empty environment
 venv: $(GLOBAL_PYTHON)
 	@echo "Creating .venv..."
-	- deactivate
+	#- deactivate
 	${GLOBAL_PYTHON} -m venv .venv
 
 ## Install & sync dependencies
